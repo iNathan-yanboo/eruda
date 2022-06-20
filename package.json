@@ -2,7 +2,7 @@
   "name": "eruda",
   "version": "2.4.1",
   "description": "Console for Mobile Browsers",
-  "main": "eruda.js",
+  "main": "dist/eruda.js",
   "types": "types/index.d.ts",
   "scripts": {
     "ci": "npm run lint && npm run test && npm run build",
