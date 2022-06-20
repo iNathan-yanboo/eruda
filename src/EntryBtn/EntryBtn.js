@@ -1,4 +1,4 @@
-import Draggabilly from 'draggabilly'
+import Moveable from 'moveable'
 import emitter from '../lib/emitter'
 import Settings from '../Settings/Settings'
 import { Emitter, nextTick, orientation } from '../lib/util'
@@ -83,8 +83,31 @@ export default class EntryBtn extends Emitter {
     const $el = this._$el
 
     draggabilly
-      .on('staticClick', () => this.emit('click'))
-      .on('dragStart', () => $el.addClass('eruda-active'))
+        .on('click', () => this.emit('click'))
+        .on('dragStart', () => $el.addClass('eruda-active'))
+        .on('drag', ({ target, left, top }) => {
+          // console.log('onDrag left, top', left, top);
+          if (left < 0) {
+            left = 0
+          }
+          if (top < 0) {
+            top = 0
+          }
+          const { clientWidth, clientHeight } = document.documentElement
+          const maxX = clientWidth - this._$el.get(0).clientWidth
+          const maxY = clientHeight - this._$el.get(0).clientHeight
+          if (left > maxX) {
+            left = maxX
+          }
+
+          if (top > maxY) {
+            top = maxY
+          }
+          target.style.left = `${left}px`;
+          target.style.top = `${top}px`;
+          // console.log("onDrag translate", dist);
+          // target!.style.transform = transform;
+        })
 
     draggabilly.on('dragEnd', () => {
       const cfg = this.config
@@ -103,8 +126,11 @@ export default class EntryBtn extends Emitter {
     window.addEventListener('resize', () => this._resetPos())
   }
   _makeDraggable() {
-    this._draggabilly = new Draggabilly(this._$el.get(0), {
-      containment: true,
+    this._draggabilly = new Moveable(document.body, {
+      target: this._$el.get(0),
+      draggable: true,
+      origin: false,
+      hideDefaultLines: true,
     })
   }
   initCfg(settings) {

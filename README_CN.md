@@ -31,6 +31,10 @@
 
 <img src="https://eruda.liriliri.io/img/screenshot.jpg" style="width:100%">
 
+## Fork
+
+更换入口按钮的拖拽依赖包为`movable`
+
 ## Demo
 
 ![Demo](https://eruda.liriliri.io/img/qrcode.png)
